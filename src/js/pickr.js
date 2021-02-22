@@ -508,14 +508,15 @@ class Pickr {
         this._eventBindings = eventBindings;
     }
 
-    _rePositioningPicker() {
+    _rePositioningPicker(el) {
         const {options} = this;
 
         // No repositioning needed if inline
         if (!options.inline) {
             const success = this._nanopop.update({
                 container: document.body.getBoundingClientRect(),
-                position: options.position
+                position: options.position,
+                reference: el || options.el
             });
 
             if (!success) {
@@ -746,10 +747,10 @@ class Pickr {
     /**
      * Shows the color-picker ui.
      */
-    show() {
+    show(el) {
         if (!this.options.disabled && !this.isOpen()) {
             this._root.app.classList.add('visible');
-            this._rePositioningPicker();
+            this._rePositioningPicker(el);
             this._emit('show', this._color);
             return this;
         }
